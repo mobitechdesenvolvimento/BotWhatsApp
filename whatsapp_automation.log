@@ -1,0 +1,20 @@
+2024-06-15 18:36:43,458 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 18:37:01,680 - INFO - Mensagem enviada para Luis (551333967651)
+2024-06-15 18:37:19,898 - INFO - Mensagem enviada para Paulo (5513997279402)
+2024-06-15 18:38:43,192 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 18:39:11,408 - INFO - Mensagem enviada para Luis (551333967651)
+2024-06-15 18:39:12,467 - ERROR - Erro ao enviar mensagens: main thread is not in main loop
+2024-06-15 18:45:13,875 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 18:45:32,096 - INFO - Mensagem enviada para Luis (551333967651)
+2024-06-15 18:45:50,314 - INFO - Mensagem enviada para Paulo (5513997279402)
+2024-06-15 19:25:50,329 - ERROR - Erro ao enviar mensagem para João Vitor (5513997279402): Número de telefone inválido ou erro no envio.
+2024-06-15 19:26:06,579 - ERROR - Erro ao enviar mensagem para Luis (551333967651): Número de telefone inválido ou erro no envio.
+2024-06-15 19:26:22,821 - ERROR - Erro ao enviar mensagem para Paulo (5513997279402): Número de telefone inválido ou erro no envio.
+2024-06-15 19:42:34,039 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 19:43:02,258 - INFO - Mensagem enviada para Luis (551333967651)
+2024-06-15 19:43:30,477 - INFO - Mensagem enviada para Paulo (5513997279402)
+2024-06-15 19:51:16,475 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 19:51:34,695 - INFO - Mensagem enviada para Luis (551333967651)
+2024-06-15 19:51:52,913 - INFO - Mensagem enviada para Paulo (5513997279402)
+2024-06-15 19:56:10,923 - INFO - Mensagem enviada para João Vitor (5513997279402)
+2024-06-15 19:56:29,144 - INFO - Mensagem enviada para Luis (551333967651)
