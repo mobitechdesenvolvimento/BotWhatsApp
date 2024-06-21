@@ -16,7 +16,7 @@ logging.basicConfig(filename='whatsapp_automation.log', level=logging.INFO,
 stop_event = Event()
 logs = {"success": [], "failure": []}
 
-def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message):
+def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message, mensagem_template):
     try:
         # Abrir WhatsApp Web
         webbrowser.open('https://web.whatsapp.com/')
@@ -45,8 +45,9 @@ def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message):
             if not Telefone.startswith('55'):
                 Telefone = '55' + Telefone
 
-            # Mensagem
-            mensagem = f'Olá {Nome}, conto com seu voto! https://www.instagram.com/dadoseleitorais'
+            # Mensagem personalizada
+            mensagem = mensagem_template.replace("{Nome}", Nome)
+
             # Criar link personalizado do WhatsApp
             link_mensagem_whatsapp = f'https://web.whatsapp.com/send?phone={Telefone}&text={quote(mensagem)}'
             webbrowser.open(link_mensagem_whatsapp)
@@ -94,12 +95,15 @@ def iniciar_envio():
     try:
         wait_time_whatsapp = int(entry_wait_time_whatsapp.get())
         wait_time_message = int(entry_wait_time_message.get())
-    except ValueError:
-        messagebox.showerror("Erro", "Os tempos de espera devem ser números inteiros.")
+        mensagem_template = text_mensagem.get("1.0", tk.END).strip()
+        if "{Nome}" not in mensagem_template:
+            raise ValueError("A mensagem deve conter a variável {Nome}.")
+    except ValueError as e:
+        messagebox.showerror("Erro", f"Entrada inválida: {str(e)}")
         return
 
     stop_event.clear()
-    thread = Thread(target=enviar_mensagens, args=(file_path, wait_time_whatsapp, wait_time_message))
+    thread = Thread(target=enviar_mensagens, args=(file_path, wait_time_whatsapp, wait_time_message, mensagem_template))
     thread.start()
 
 def parar_envio():
@@ -129,6 +133,9 @@ def show_info_whatsapp():
 def show_info_message():
     messagebox.showinfo("Informação", "Tempo de espera entre mensagens: O tempo (em segundos) necessário entre o envio de cada mensagem para garantir que o WhatsApp Web processe e envie a mensagem corretamente.")
 
+def show_info_mensagem():
+    messagebox.showinfo("Informação", "Mensagem: Insira a mensagem a ser enviada. Utilize {Nome} como um espaço reservado que será substituído pelo nome do destinatário.")
+
 # Configurar a interface gráfica
 root = tk.Tk()
 root.title("Envio Automático de Mensagens no WhatsApp")
@@ -155,23 +162,32 @@ tk.Label(frame, text="segundos").grid(row=1, column=2, sticky="w")
 info_button_message = tk.Button(frame, text="ℹ️", command=show_info_message)
 info_button_message.grid(row=1, column=3, padx=5)
 
+# Campo de texto para mensagem
+tk.Label(frame, text="Mensagem:").grid(row=2, column=0, sticky="w")
+text_mensagem = tk.Text(frame, height=5, width=40)
+text_mensagem.insert(tk.END, "Olá {Nome}, conto com seu voto! https://www.instagram.com/dadoseleitorais")
+text_mensagem.grid(row=2, column=1, columnspan=2, pady=10)
+
+info_button_mensagem = tk.Button(frame, text="ℹ️", command=show_info_mensagem)
+info_button_mensagem.grid(row=2, column=3, padx=5, sticky="n")
+
 # Botões de controle
 botao_abrir = tk.Button(frame, text="Carregar Planilha e Enviar Mensagens", command=iniciar_envio)
-botao_abrir.grid(row=2, columnspan=4, pady=10)
+botao_abrir.grid(row=3, columnspan=4, pady=10)
 
 botao_parar = tk.Button(frame, text="Parar Envio", command=parar_envio)
-botao_parar.grid(row=3, columnspan=4, pady=10)
+botao_parar.grid(row=4, columnspan=4, pady=10)
 
 botao_salvar_logs = tk.Button(frame, text="Salvar Logs", command=salvar_logs)
-botao_salvar_logs.grid(row=4, columnspan=4, pady=10)
+botao_salvar_logs.grid(row=5, columnspan=4, pady=10)
 
 # Barra de progresso
 progress_var = tk.DoubleVar()
 progress_bar = Progressbar(frame, variable=progress_var, maximum=100)
-progress_bar.grid(row=5, columnspan=4, pady=10)
+progress_bar.grid(row=6, columnspan=4, pady=10)
 
 # Campo de texto para logs
 log_text = tk.Text(frame, height=10, width=50)
-log_text.grid(row=6, columnspan=4, pady=10)
+log_text.grid(row=7, columnspan=4, pady=10)
 
 root.mainloop()
