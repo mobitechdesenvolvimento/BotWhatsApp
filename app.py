@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
-from tkinter.ttk import Progressbar
+from tkinter import scrolledtext
+from tkinter.ttk import Progressbar, Frame, Label, Button, Entry
+from ttkbootstrap import Style
 import openpyxl
 from urllib.parse import quote
 import webbrowser
@@ -140,66 +142,68 @@ def show_info_mensagem():
 root = tk.Tk()
 root.title("Envio Automático de Mensagens no WhatsApp")
 
+style = Style(theme="superhero")
+
 # Seção de tempos de espera
-frame_tempo_espera = tk.LabelFrame(root, text="Configuração de Tempos de Espera", padx=10, pady=10)
+frame_tempo_espera = Frame(root, padding=10)
 frame_tempo_espera.pack(padx=10, pady=10, fill="both")
 
-tk.Label(frame_tempo_espera, text="Tempo de espera para carregar WhatsApp:").grid(row=0, column=0, sticky="w")
-entry_wait_time_whatsapp = tk.Entry(frame_tempo_espera)
+Label(frame_tempo_espera, text="Tempo de espera para carregar WhatsApp:").grid(row=0, column=0, sticky="w")
+entry_wait_time_whatsapp = Entry(frame_tempo_espera)
 entry_wait_time_whatsapp.insert(0, "30")
 entry_wait_time_whatsapp.grid(row=0, column=1)
 
-tk.Label(frame_tempo_espera, text="segundos").grid(row=0, column=2, sticky="w")
-info_button_whatsapp = tk.Button(frame_tempo_espera, text="ℹ️", command=show_info_whatsapp)
+Label(frame_tempo_espera, text="segundos").grid(row=0, column=2, sticky="w")
+info_button_whatsapp = Button(frame_tempo_espera, text="ℹ️", command=show_info_whatsapp)
 info_button_whatsapp.grid(row=0, column=3, padx=5)
 
-tk.Label(frame_tempo_espera, text="Tempo de espera entre mensagens:").grid(row=1, column=0, sticky="w")
-entry_wait_time_message = tk.Entry(frame_tempo_espera)
+Label(frame_tempo_espera, text="Tempo de espera entre mensagens:").grid(row=1, column=0, sticky="w")
+entry_wait_time_message = Entry(frame_tempo_espera)
 entry_wait_time_message.insert(0, "10")
 entry_wait_time_message.grid(row=1, column=1)
 
-tk.Label(frame_tempo_espera, text="segundos").grid(row=1, column=2, sticky="w")
-info_button_message = tk.Button(frame_tempo_espera, text="ℹ️", command=show_info_message)
+Label(frame_tempo_espera, text="segundos").grid(row=1, column=2, sticky="w")
+info_button_message = Button(frame_tempo_espera, text="ℹ️", command=show_info_message)
 info_button_message.grid(row=1, column=3, padx=5)
 
 # Seção de mensagem
-frame_mensagem = tk.LabelFrame(root, text="Mensagem", padx=10, pady=10)
+frame_mensagem = Frame(root, padding=10)
 frame_mensagem.pack(padx=10, pady=10, fill="both")
 
-tk.Label(frame_mensagem, text="Mensagem:").grid(row=0, column=0, sticky="w")
-text_mensagem = tk.Text(frame_mensagem, height=5, width=40)
+Label(frame_mensagem, text="Mensagem:").grid(row=0, column=0, sticky="w")
+text_mensagem = scrolledtext.ScrolledText(frame_mensagem, height=5, width=40)
 text_mensagem.insert(tk.END, "Olá {Nome}, conto com seu voto! https://www.instagram.com/dadoseleitorais")
 text_mensagem.grid(row=0, column=1, columnspan=2, pady=10)
 
-info_button_mensagem = tk.Button(frame_mensagem, text="ℹ️", command=show_info_mensagem)
+info_button_mensagem = Button(frame_mensagem, text="ℹ️", command=show_info_mensagem)
 info_button_mensagem.grid(row=0, column=3, padx=5, sticky="n")
 
 # Botões de controle
-frame_controle = tk.Frame(root, padx=10, pady=10)
+frame_controle = Frame(root, padding=10)
 frame_controle.pack(padx=10, pady=10, fill="both")
 
-botao_abrir = tk.Button(frame_controle, text="Carregar Planilha e Enviar Mensagens", command=iniciar_envio)
+botao_abrir = Button(frame_controle, text="Carregar Planilha e Enviar Mensagens", command=iniciar_envio)
 botao_abrir.grid(row=0, column=0, padx=10, pady=10)
 
-botao_parar = tk.Button(frame_controle, text="Parar Envio", command=parar_envio)
+botao_parar = Button(frame_controle, text="Parar Envio", command=parar_envio)
 botao_parar.grid(row=0, column=1, padx=10, pady=10)
 
-botao_salvar_logs = tk.Button(frame_controle, text="Salvar Logs", command=salvar_logs)
+botao_salvar_logs = Button(frame_controle, text="Salvar Logs", command=salvar_logs)
 botao_salvar_logs.grid(row=0, column=2, padx=10, pady=10)
 
 # Barra de progresso
-frame_progresso = tk.LabelFrame(root, text="Progresso do Envio", padx=10, pady=10)
+frame_progresso = Frame(root, padding=10)
 frame_progresso.pack(padx=10, pady=10, fill="both")
 
 progress_var = tk.DoubleVar()
-progress_bar = Progressbar(frame_progresso, variable=progress_var, maximum=100)
+progress_bar = Progressbar(frame_progresso, variable=progress_var, maximum=100, mode='determinate')
 progress_bar.pack(fill="both", pady=10)
 
 # Campo de texto para logs
-frame_logs = tk.LabelFrame(root, text="Logs de Envio", padx=10, pady=10)
+frame_logs = Frame(root, padding=10)
 frame_logs.pack(padx=10, pady=10, fill="both")
 
-log_text = tk.Text(frame_logs, height=10, width=50)
+log_text = scrolledtext.ScrolledText(frame_logs, height=10, width=50)
 log_text.pack(pady=10, padx=10)
 
 root.mainloop()
