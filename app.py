@@ -47,6 +47,13 @@ def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message, mensagem_
             if not Telefone.startswith('55'):
                 Telefone = '55' + Telefone
 
+            # Verificar se o telefone está no formato correto do WhatsApp (55 + número)
+            if len(Telefone) != 13:
+                logging.error(f"Número de telefone inválido para {Nome} ({Telefone})")
+                log_text.insert(tk.END, f"Número de telefone inválido para {Nome} ({Telefone})\n")
+                logs["failure"].append((Nome, Telefone))
+                continue
+
             # Mensagem personalizada
             mensagem = mensagem_template.replace("{Nome}", Nome)
 
