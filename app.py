@@ -149,7 +149,7 @@ def show_info_mensagem():
 root = tk.Tk()
 root.title("Envio Automático de Mensagens no WhatsApp")
 
-style = Style(theme="superhero")
+style = Style(theme="lumen")
 
 # Seção de tempos de espera
 frame_tempo_espera = Frame(root, padding=10)
