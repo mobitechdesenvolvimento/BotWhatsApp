@@ -18,6 +18,26 @@ logging.basicConfig(filename='whatsapp_automation.log', level=logging.INFO,
 stop_event = Event()
 logs = {"success": [], "failure": []}
 
+def criar_modelo_planilha():
+    # Cria um modelo de planilha com colunas "Nome" e "Telefone"
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = "Modelo"
+    sheet.append(["Nome", "Telefone"])
+    # Adiciona uma linha de exemplo
+    sheet.append(["Exemplo Nome", "5513997279402"])  # Número de exemplo com código do país (Brasil)
+    return workbook
+
+def baixar_modelo():
+    # Função para salvar o modelo de planilha no local especificado pelo usuário
+    modelo_workbook = criar_modelo_planilha()
+    save_path = filedialog.asksaveasfilename(defaultextension=".xlsx", filetypes=[("Excel files", "*.xlsx")])
+    if not save_path:
+        return
+    
+    modelo_workbook.save(save_path)
+    messagebox.showinfo("Sucesso", "Modelo de planilha baixado com sucesso!")
+
 def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message, mensagem_template):
     try:
         # Abrir WhatsApp Web
@@ -26,17 +46,16 @@ def enviar_mensagens(file_path, wait_time_whatsapp, wait_time_message, mensagem_
 
         # Ler planilha e guardar informações sobre nome e telefone
         workbook = openpyxl.load_workbook(file_path)
-        pagina_demandas = workbook['cadastros']
+        pagina_demandas = workbook.active
 
         total_rows = pagina_demandas.max_row - 1
         current_row = 0
 
-        for linha in pagina_demandas.iter_rows(min_row=2):
+        for linha in pagina_demandas.iter_rows(min_row=2, values_only=True):
             if stop_event.is_set():
                 break
 
-            Nome = linha[6].value
-            Telefone = linha[20].value
+            Nome, Telefone = linha
 
             if not Nome or not Telefone:
                 continue
@@ -189,14 +208,17 @@ info_button_mensagem.grid(row=0, column=3, padx=5, sticky="n")
 frame_controle = Frame(root, padding=10)
 frame_controle.pack(padx=10, pady=10, fill="both")
 
+botao_baixar_modelo = Button(frame_controle, text="Baixar Modelo de Planilha", command=baixar_modelo)
+botao_baixar_modelo.grid(row=0, column=0, padx=10, pady=10)
+
 botao_abrir = Button(frame_controle, text="Carregar Planilha e Enviar Mensagens", command=iniciar_envio)
-botao_abrir.grid(row=0, column=0, padx=10, pady=10)
+botao_abrir.grid(row=0, column=1, padx=10, pady=10)
 
 botao_parar = Button(frame_controle, text="Parar Envio", command=parar_envio)
-botao_parar.grid(row=0, column=1, padx=10, pady=10)
+botao_parar.grid(row=0, column=2, padx=10, pady=10)
 
 botao_salvar_logs = Button(frame_controle, text="Salvar Logs", command=salvar_logs)
-botao_salvar_logs.grid(row=0, column=2, padx=10, pady=10)
+botao_salvar_logs.grid(row=0, column=3, padx=10, pady=10)
 
 # Barra de progresso
 frame_progresso = Frame(root, padding=10)
