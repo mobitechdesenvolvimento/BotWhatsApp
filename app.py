@@ -266,19 +266,20 @@ frame_controle.columnconfigure(1, weight=1)
 
 # Barra de progresso
 frame_progresso = Frame(root, padding=10)
-frame_progresso.pack(padx=20, pady=10, fill="x")
+frame_progresso.pack(padx=20, pady=10, fill="x", anchor="center")
 
 progress_var = tk.DoubleVar()
-progress_bar = Progressbar(
-    frame_progresso, variable=progress_var, maximum=100, mode='determinate')
-progress_bar.pack(fill="x", pady=10)
+progress_bar = Progressbar(frame_progresso, variable=progress_var, maximum=100)
+progress_bar.pack(fill="x", padx=10, pady=10)
 
-# Campo de texto para logs
-frame_logs = Frame(root, padding=10)
-frame_logs.pack(padx=20, pady=10, fill="both", expand=True)
+# Área de log
+frame_log = Frame(root, padding=10)
+frame_log.pack(padx=20, pady=10, fill="both", expand=True)
 
-log_text = scrolledtext.ScrolledText(frame_logs, height=10, width=50)
-log_text.pack(pady=10, padx=10, fill="both", expand=True)
+Label(frame_log, text="Logs:").pack(anchor="w", padx=10)
+log_text = scrolledtext.ScrolledText(frame_log, height=10)
+log_text.pack(fill="both", expand=True, padx=10, pady=10)
 
-
+# Iniciar a interface
 root.mainloop()
+
