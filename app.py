@@ -27,7 +27,7 @@ def criar_modelo_planilha():
     sheet.append(["Nome", "Telefone"])
     # Adiciona uma linha de exemplo
     # Número de exemplo com código do país (Brasil)
-    sheet.append(["Exemplo Nome", "5513997279402"])
+    sheet.append(["Exemplo Nome", "5513111111111"])
     return workbook
 
 
